@@ -1,9 +1,10 @@
 import random
 from unicodedata import normalize
 
-
+# Fonction pour lire les mots depuis un fichier ou retourner une liste de mots par défaut
 def lire_mots(fichier=None):
     mots_par_defaut = [
+        # Liste de mots par défaut si aucun fichier n'est fourni
         "carbone", "mandat", "arbuste", "gommeux", "lyrique", "arnica", "moulure", "schisme", "turbot", "satire",
         "stupide", "veneneux", "argileux", "cathode", "froufrou", "affable", "foudroyant", "gambader", "heredite",
         "mythique", "pulsion", "balafre", "brimborion", "ciselure", "cynique", "dialecte", "insomniaque",
@@ -22,34 +23,37 @@ def lire_mots(fichier=None):
 
     if fichier:
         try:
+            # Lecture des mots depuis le fichier spécifié
             with open(fichier, 'r', encoding='utf-8') as f:
                 mots = f.read().split()
             return mots
         except FileNotFoundError:
+            # Gestion de l'erreur si le fichier n'est pas trouvé
             print(f"Le fichier {fichier} n'a pas été trouvé. Veuillez fournir un chemin valide.")
             fichier = input("Entrez le chemin vers votre fichier de mots ou pressez sur l'entrée pour jouer avec les mots par défauts: ").strip()
             return lire_mots(fichier)  # Répéter la fonction avec le nouveau chemin du fichier
     else:
+        # Retourner les mots par défaut si aucun fichier n'est spécifié
         return mots_par_defaut
 
-
+# Fonction pour normaliser un mot en supprimant les accents
 def normaliser(mot):
     return normalize('NFD', mot).encode('ASCII', 'ignore').decode('utf8')
 
-
+# Fonction pour choisir un mot aléatoirement dans une liste
 def choisir_mot(mots):
     return random.choice(mots)
 
-
+# Fonction pour afficher le mot avec les lettres devinées et des underscores pour les lettres non devinées
 def afficher_mot(mot, lettres_devinees):
     return ' '.join([lettre if lettre in lettres_devinees else '_' for lettre in mot])
 
-
+# Fonction pour demander une lettre au joueur et la normaliser
 def demander_lettre():
     lettre = input("Devinez une lettre: ").strip().lower()
     return normaliser(lettre)
 
-
+# Fonction principale pour jouer au jeu du pendu
 def jouer():
     utiliser_fichier = input("Voulez-vous utiliser un fichier personnalisé pour les mots ? (o/n): ").strip().lower()
     if utiliser_fichier == 'o':
@@ -101,7 +105,6 @@ def jouer():
     else:
         print("Merci d'avoir joué !")
 
-
+# Point d'entrée du script
 if __name__ == "__main__":
     jouer()
-
